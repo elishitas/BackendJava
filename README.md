@@ -7,14 +7,14 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 
 ## Semana 1
 - Introducción (ya lo leíste)
-- [¿Qué es una API?](#¿Qué-es-una-API?)
+- [Definición de API](#Definición-de-API)
 - [Tipos de APIS](#Tipos-de-APIS)
-- [¿Cómo funcionan las API?](#¿Cómo-funcionan-las-API?)
-- [¿Qué es JSON? ¿Para qué sirve?](#Qué-es-JSON?)
+- [Funcionamiento de las APIS](#Funcionamiento-de-las-APIS)
+- [Definición de JSON](#Definición-de-JSON)
   - Them
   - Them
 
-# ¿Qué es una API?
+# Definición de API
 
 Las **API** son mecanismos que permiten a dos componentes de software **comunicarse** entre sí mediante un conjunto de definiciones y protocolos. 
 
@@ -44,7 +44,7 @@ Estas combinan dos o más API diferentes para abordar requisitos o comportamient
 
 Solo pueden acceder a ellas los desarrolladores externos autorizados para ayudar a las asociaciones entre empresas.
 
-# ¿Cómo funcionan las API?
+# Funcionamiento de las APIS
 
 La arquitectura de las API suele explicarse en términos de **cliente** y **servidor**. La aplicación que envía la solicitud se llama **cliente**, y la que envía la respuesta se llama **servidor**. 
 
@@ -65,3 +65,34 @@ La API de WebSocket es otro desarrollo moderno de la API web que utiliza objeto
 - **API de REST**
 
 Estas son las API más populares y flexibles que se encuentran en la web actualmente. El cliente envía las solicitudes al servidor como datos. El servidor utiliza esta entrada del cliente para iniciar funciones internas y devuelve los datos de salida al cliente.
+
+# Definición de JSON
+
+JavaScript Object Notation (JSON) es un formato basado en texto estándar para representar datos estructurados en la sintaxis de objetos de JavaScript. 
+
+Es comúnmente utilizado para transmitir datos en aplicaciones web (por ejemplo: enviar algunos datos desde el servidor al cliente, así estos datos pueden ser mostrados en páginas web, o vice versa).
+
+Ejemplo de un JSON:
+
+
+``` json
+{
+  "squadName": "Super hero squad",
+  "homeTown": "Metro City",
+  "formed": 2016,
+  "secretBase": "Super tower",
+  "active": true,
+  "members": [
+    {
+      "name": "Molecule Man",
+      "age": 29,
+      "secretIdentity": "Dan Jukes",
+      "powers": [
+        "Radiation resistance",
+        "Turning tiny",
+        "Radiation blast"
+      ]
+    },
+}
+```
+
