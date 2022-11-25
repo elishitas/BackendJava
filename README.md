@@ -11,8 +11,8 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [Tipos de APIS](#Tipos-de-APIS)
 - [Funcionamiento de las APIS](#Funcionamiento-de-las-APIS)
 - [Definición de JSON](#Definición-de-JSON)
-  - Them
-  - Them
+- [Definición de controller](#Definición-de-controller)
+- [Creación de un RestController] (#Creación-de-un-RestController)
 
 # Definición de API
 
@@ -95,4 +95,48 @@ Ejemplo de un JSON:
     },
 }
 ```
+# Definición de controller
+
+Un *controller* es un componente de Spring capaz de recibir peticiones **http** y responderlas.
+
+Las clases que definimos como un *controller* es responsable de procesar las llamadas entrantes (**request**) que ingresan a nuestra aplicación, validarlas y dar una respuesta (**response**).
+
+Un *rest controller* es un tipo de *controller* que reciben peticiones con un formato de específico que cumple con formatos de solicitud RESTful habitualmente y mayormente en JSON , aunque a veces se usan otros como HTML, XML, o simplemente texto.
+
+# Creación de un RestController
+
+El primer paso para crear un ‘controlador rest’ es con la clase *@RestController*.
+
+Con esto Spring ya sabe que esa clase será un componente encargado de recibir llamadas.
+
+```
+@RestController
+public class HelloWordController {
+}
+```
+Una vez que hemos anotado la clase podemos definir el método y la ruta en la cual recibirá la llamada externa.
+
+Anotamos el método que da respuesta con *@GetMapping* y le indicamos la ruta en la cual responderá . Aquí definimos el path “/hello”.
+
+```
+@RestController
+public class HelloWordController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello dev";
+    }
+
+}
+```
+Arrancamos la aplicación.
+
+Ahora podemos invocar nuestro *RestControler* mediante una llamada en el path ‘/hello’ que definimos previamente.
+
+El servicio levanta en ‘localhost:8080’ y el path es ‘/hello’. Vemos la respuesta ‘Hello dev‘
+
+![1](https://i.imgur.com/stlHrl7.png)
+
+
+
 
