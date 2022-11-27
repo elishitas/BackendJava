@@ -10,13 +10,16 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [Definición de API](#Definición-de-API)
 - [Tipos de APIS](#Tipos-de-APIS)
 - [Funcionamiento de las APIS](#Funcionamiento-de-las-APIS)
-- [Funcionamiento de las APIS](#Funcionamiento-de-las-APIS)
 - [REST](#REST)
 - [HTTP-HTTPS](#HTTP-HTTPS)
 - [Definición de JSON](#Definición-de-JSON)
 - [Definición de controller](#Definición-de-controller)
 - [Creación de un RestController] (#Creación-de-un-RestController)
-- 
+- [Ciclo completo] (#Ciclo-completo)
+- [Arqutectura en Capas](#Arqutectura-en-Capas)
+- [Java](#Java)
+- [Spring Framework](#Spring-Framework) 
+
 
 # Definición de API
 
@@ -108,24 +111,94 @@ Resumen de Rest:
 
 # HTTP-HTTPS
 
-HTTP es el acrónimo de Hypertext Transfer Protocol (en español protocolo de transferencia de hiper texto). HTTPS es igual pero añadiéndole "Seguro".
+El protocoloHTTP es el acrónimo de Hypertext Transfer Protocol (en español protocolo de transferencia de hiper texto). HTTPS es igual pero añadiéndole
+"Seguro".
 Estos dos protocolos se usan para lo mismo, la transferencia de datos. La diferencia básica entre ambos es la forma en la que viajan los datos.
 
 La principal diferencia entre HTTP y HTTPS es la seguridad. El protocolo HTTPS impide que otros usuarios puedan interceptar la información confidencial
 que se transfiere entre el cliente y el servidor web a través de Internet. Por decirlo de una manera muy sencilla, el protocolo HTTPS es la versión
 segura del HTTP
 
+La forma que tienen Request y Response de acuerdo al protocolo HTTP:
+
+![1](https://i.imgur.com/iyHPNRW.png)
+
+![1](https://i.imgur.com/hvSHHBy.png)
+
+Request:
+  - URL A donde queremos ir 
+  - Method Metodo
+  
+Response
+  - Status code
+  
+Request y Response:
+  - Headers y Body
+
 ![1](https://i.imgur.com/QSXvcq8.png)
+
+API de ejemplo [PokeApi](https://pokeapi.co/)
 
 # Definición de JSON
 
-JavaScript Object Notation (JSON) es un formato basado en texto estándar para representar datos estructurados en la sintaxis de objetos de JavaScript. 
+JSON, que significa JavaScript Object Notation, es una formatación usada para estructurar datos en forma de texto y transmitirlos de un sistema a otro,
+como en aplicaciones cliente-servidor o en aplicaciones móviles.
 
-Es comúnmente utilizado para transmitir datos en aplicaciones web (por ejemplo: enviar algunos datos desde el servidor al cliente, así estos datos pueden
-ser mostrados en páginas web, o vice versa).
+El archivo .json es un archivo que contiene una serie de datos estructurados en formato de texto y se usa para transferir información entre sistemas. A 
+pesar de su origen estar en el lenguaje JavaScript, JSON no es un lenguaje de programación.
+
+JSON es una notación para la transferencia de datos que sigue un estándar específico. Por eso, puede emplearse en diferentes lenguajes de programación
+de sistemas.
+
+Los datos contenidos en un archivo en formato JSON deben estructurarse por medio de una colección de pares con nombre y valor o deben ser una lista
+ordenada de valores. Sus elementos tienen que contener:
+  
+  - Clave: corresponde al identificador del contenido. Por eso, debe ser una string delimitada por comillas.
+  - Valor: representa el contenido correspondiente y puede contener los siguientes tipos de datos: string, array, object, number, boolean o null.
+
+La transferencia de datos entre aplicaciones es realizada por medio de API —Application Programming Interface— que, entre otros formatos, utiliza la
+notación JSON para estructurar la información enviada.
+
+El archivo JSON también se usa para realizar requisiciones AJAX en sitios web, en que se hacen diferentes interacciones con bancos de datos, como MySql,
+para realizar operaciones como consulta, inclusión y exclusión de registros.
+
+Formatación del archivo JSON
+
+  - Llaves { } sirven para delimitar los objetos y son obligatorias para iniciar y terminar el contenido.
+  - Corchetes [ ] se usan para indicar un array.
+  - Dos puntos : sirven para separar la clave y su valor correspondiente.
+  - Coma , se usa para indicar la separación entre los elementos.
+ 
+ Ejemplos de cómo los datos deben relacionarse en un archivo .json.
 
 Ejemplo de un JSON:
 
+``` json
+
+String
+{ "ciudad": "Antioquía"}
+
+Array
+{
+    "ciudades": ["Monterrey", "Guadalajara", "Guanajuato"]
+}
+
+Objeto
+ "ciudad": {
+       "ciudad": "Guadalajara",
+       "sigla": "GDL"
+  }
+}
+
+Lista de objetos
+{   "ciudades":[
+    {"ciudad": "Guadalajara", "sigla": "GDL"},
+    {"ciudad": "Monterrey", "sigla": "MTY"},
+    {"ciudad": "Guanajuato", "sigla": "GTO"}
+    ]
+}
+```
+Otro Ejemplo:
 
 ``` json
 {
@@ -146,7 +219,45 @@ Ejemplo de un JSON:
       ]
     },
 }
+
 ```
+# Ciclo completo
+
+![1](https://i.imgur.com/pdDv36D.png)
+
+# Arqutectura en Capas
+
+La programación por capas es un estilo de programación en el que el objetivo primordial es la separación de la lógica de negocios de la lógica de diseño.
+
+La Arquitectura Hexagonal, o la Arquitectura de Puertos y Adaptadores, como un patrón de arquitectura de diseño de software, en el que se busca
+desacoplar la aplicación por componentes. Estos componentes formarán una serie de capas que serán fácilmente conectables entre si mediante puertos y
+adaptadores, lo que hará que los componentes puedan llegar a ser intercambiables en cualquier nivel, y ayudará a los test automáticos.
+Esta Arquitectura fue introducida por  [Alistair Cockburn](https://jmgarridopaz.github.io/content/arquitecturahexagonal.html), y según algunos
+investigadores y autores, podría decirse que ha sido el precursor de la arquitectura orientada a microservicios.
+
+Esta Arquitectura se suele representar mediante un Hexagono, en donde el número de lados representa un puerto, el cual nos permitirá ir hacia una capa
+interior o exterior de la aplicación, es decir, cada componente se podrá conectar con otro componente a través de un «puerto». La comunicación entre los
+puertos seguirán siempre un protocolo concreto que dependerá del objetivo o función que tenga. La comunicación será definida a través, por ejemplo de un
+API.
+
+![1](https://i.imgur.com/wcf48jz.png)
+
+La idea principal detrás de este tipo de arquitectura, es crear un componente central o núcleo rodeados de interfaces a través del cual se pueda acceder.
+Es decir, lo que se propone es un núcleo central, que ocuparía el hexagono más interior, en el que se tendrían los dominios y los repositorios, que
+expondrían un API o Interfaces para poder obtener datos a partir de ellos.
+
+# Java
+[Java](https://dev.java/learn/) es un lenguaje de programación de alto nivel que nos ayuda a construir aplicaciones para diferentes dispositivos y
+sistemas operativos.
+
+# Spring Framework 
+
+Como definición podemos decir que Spring es un framework de código abierto para la creación de aplicaciones empresariales Java
+
+[Info](https://spring.io/)
+[Documentación](https://docs.spring.io/spring-framework/docs/current/javadoc-api/index.html)
+[Inicializador de Spring](https://start.spring.io/)
+
 # Definición de controller
 
 Un *controller* es un componente de Spring capaz de recibir peticiones **http** y responderlas.
