@@ -422,3 +422,34 @@ public class UserController {
 
 }
 ```
+# Entity
+
+Lo más cercano a la base de datos es la entidad como vimos en la Estructura de Capas:
+
+![1](https://i.imgur.com/sPkYWBh.png)
+
+Una [entidad](https://desarrollodesoftware.home.blog/2019/03/03/que-es-una-entidad-en-java-ee-y-como-declararla/) en Java es un objeto de persistencia.
+
+La persistencia es la habilidad de una aplicación para mantener(persistir) y recuperar información de sistemas de almacenamiento no volátiles.
+
+Una entidad representa una tabla en una base de datos, y cada instancia de entidad corresponde a una fila en la tabla.
+
+El estado de una entidad se representa por campos de persistencia o propiedades de persistencia.
+
+Una entidad es la representación de información que necesitamos en nuestra aplicación.Esta entidad podría ser un usuario, un producto o cualquier dato
+que nuestra aplicación necesita mantener persistente para luego recuperarla cuando la necesite. Es un objeto, elemento o ‘cosa’ con atributos
+particulares que lo distinguen. Por ejemplo, este podría ser un ‘user (usuario)’ sobre el que necesitamos conocer sus atributos como el nombre, edad,
+email, etc
+
+Definición de una entidad
+
+- Defines la entidad con la anotación *`@Entity`*
+- Es necesario una *primary key (PK)* (clave primaria) con *`@ID`*
+- El valor de esta *PK* es generada automáticamente con esta anotación *`@GeneratedValue`* con el valor AUTO
+
+Hay otras anotaciones que puedes utilizar.
+
+- *`@Table`* para definir explícitamente el nombre de la tabla.
+- *`@Column`* para definir el nombre de la columna.
+
+![1](https://i.imgur.com/DlVeKnK.png)
