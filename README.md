@@ -18,11 +18,18 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [Arqutectura en Capas](#Arqutectura-en-Capas)
 - [Java](#Java)
 - [Spring Framework](#Spring-Framework) 
+- [Maven](#Maven)
+- [Estructura del proyecto](#Estructura-del-proyecto) 
 - [Definición de Controller](#Definición-de-Controller)
 - [Creación de un RestController](#Creación-de-un-RestController)
 - [Tipos de mapeos en un rest controller de Spring Boot](#Tipos-de-mapeos-en-un-rest-controller-de-Spring-Boot)
 
 
+## Semana 2
+- Entity
+- Capa Repository
+- 
+- 
 
 # Definición de API
 
@@ -281,6 +288,26 @@ Como definición podemos decir que Spring es un framework de código abierto par
 [Documentación](https://docs.spring.io/spring-framework/docs/current/javadoc-api/index.html)
 
 [Inicializador de Spring](https://start.spring.io/)
+
+# Maven
+
+Maven es un “Project Management Framework”, esto es, un framework de gestión de proyectos de software, que proporciona un modelo estándar de gestión y
+descripción de proyectos. Maven da soluciones a tareas que abarcan desde la compilación hasta la distribución, despliegue y documentación de los
+proyectos
+
+# Estructura del proyecto 
+
+Al bajar de [Inicializador de Spring](https://start.spring.io/)
+
+El proyecto tiene diferentes carpetas las cuales en la Clase 1 solamente vamos a observar:
+
+Main
+
+Java
+
+![1](https://i.imgur.com/6844JYi.png)
+
+![1](https://i.imgur.com/uvX21Io.png)
 
 # Definición de Controller
 
