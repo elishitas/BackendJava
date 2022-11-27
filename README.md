@@ -13,12 +13,13 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [REST](#REST)
 - [HTTP-HTTPS](#HTTP-HTTPS)
 - [Definición de JSON](#Definición-de-JSON)
-- [Definición de controller](#Definición-de-controller)
-- [Creación de un RestController] (#Creación-de-un-RestController)
 - [Ciclo completo] (#Ciclo-completo)
 - [Arqutectura en Capas](#Arqutectura-en-Capas)
 - [Java](#Java)
 - [Spring Framework](#Spring-Framework) 
+- [Definición de Controller](#Definición-de-Controller)
+- [Creación de un RestController](#Creación-de-un-RestController)
+
 
 
 # Definición de API
@@ -255,10 +256,12 @@ sistemas operativos.
 Como definición podemos decir que Spring es un framework de código abierto para la creación de aplicaciones empresariales Java
 
 [Info](https://spring.io/)
+
 [Documentación](https://docs.spring.io/spring-framework/docs/current/javadoc-api/index.html)
+
 [Inicializador de Spring](https://start.spring.io/)
 
-# Definición de controller
+# Definición de Controller
 
 Un *controller* es un componente de Spring capaz de recibir peticiones **http** y responderlas.
 
