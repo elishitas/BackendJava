@@ -11,14 +11,16 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [Tipos de APIS](#Tipos-de-APIS)
 - [Funcionamiento de las APIS](#Funcionamiento-de-las-APIS)
 - [REST](#REST)
+- [Endpoint](#Endpoint)
 - [HTTP-HTTPS](#HTTP-HTTPS)
 - [Definición de JSON](#Definición-de-JSON)
-- [Ciclo completo] (#Ciclo-completo)
+- [Ciclo completo](#Ciclo-completo)
 - [Arqutectura en Capas](#Arqutectura-en-Capas)
 - [Java](#Java)
 - [Spring Framework](#Spring-Framework) 
 - [Definición de Controller](#Definición-de-Controller)
 - [Creación de un RestController](#Creación-de-un-RestController)
+- [Tipos de mapeos en un rest controller de Spring Boot](#Tipos-de-mapeos-en-un-rest-controller-de-Spring-Boot)
 
 
 
@@ -109,6 +111,25 @@ Resumen de Rest:
 - Arquitectura de sistemas en capas -Cada capa tiene un rol específico-
 
 ![1](https://i.imgur.com/sPkYWBh.png)
+
+# Endpoint
+
+Los endpoints son las URLs de un API o un backend que responden a una petición. Los mismos entrypoints tienen que calzar con un endpoint para existir.
+Algo debe responder para que se renderice un sitio con sentido para el visitante. 
+
+Por cada entrypoint esperando la visita de un usuario puede haber docenas de endpoints sirviendo los datos para llenar cada gráfico e infografía que se
+despliega en el entrypoint.
+
+La diferencia entre entrypoint y endpoint es que los **endpoints no están pensados para interactuar con el usuario final**. Usualmente sólo devolverán
+json, o no devolverán nada. Y más que frecuentemente, un entrypoint hará varios llamados a distintos endpoints para mostrar estadísticas, galerías,
+últimos comentarios, etc.
+
+Adicionalmente, se asume que cuando se habla de un endpoint estamos en un entorno **RESTful**, por lo cual (a diferencia del uso de un browser), el
+cliente *puede usar un mismo endpoint con distintos verbos* Un mismo endpoint, por ejemplo, va a devolver una lista de usuarios:
+
+```
+/users
+```
 
 # HTTP-HTTPS
 
@@ -297,12 +318,80 @@ public class HelloWordController {
 ```
 Arrancamos la aplicación.
 
-Ahora podemos invocar nuestro *RestControler* mediante una llamada en el path ‘/hello’ que definimos previamente.
+Ahora podemos invocar nuestro *RestController* mediante una llamada en el path ‘/hello’ que definimos previamente.
 
 El servicio levanta en ‘localhost:8080’ y el path es ‘/hello’. Vemos la respuesta ‘Hello dev‘
 
 ![1](https://i.imgur.com/stlHrl7.png)
 
+# Tipos de mapeos en un rest controller de Spring Boot
 
+Anteriormente creamos un *mapping* para el path ‘/hello’ . Este mapeo lo definimos como un *@GetMapping*.
 
+Sin embargo, debemos saber que hay otros tipos de *mapping* en Spring Boot.
 
+![1](https://i.imgur.com/APY5SEv.png)
+
+En los métodos de un mapeo podemos usar:
+
+- **Get**: para solicitar información de un recurso.
+- **Post**: para enviar información a fin de crear o de actualizar un recurso.
+- **Put**: para enviar información a fin de modificar un recurso.
+- **Patch**: actualiza una parte del recurso.
+- **Delete**: elimina un recurso específico.
+
+Diferencia entre Post , Put, Patch
+
+Habitualmente la diferencia entre Post y Put radica en que Post lo usamos para **añadir** un recurso y Put lo utilizamos para **modificar** un recurso en particular.
+
+Patch también lo utilizamos para actualizar un recurso pero solo una **parcialidad** del mismo.
+
+Ejemplos de mapeo en Spring Boot
+
+A continuación vemos ejemplos simples de mapeo.
+
+Para el caso del ***GetMapping*** estamos pidiendo mediante un *id* al recurso *User*. A fin de recibir este *id* utilizamos *PathVariable*
+
+Para el ***PostMapping, PutMapping, ***PatchMapping*** se recibe un request con el body del User que se quiere insertar o actualizar.
+
+El uso de ***RequestBody*** permite que Spring entienda la info que mandamos *body* de la petición.
+
+En el ***DeleteMapping*** recibimos también *id* que identifica el objeto a eliminar y se devuelve true / false según si se pudo eliminar o no.
+
+```
+@RestController
+public class UserController {
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/api/user/{id}")
+    public User byId(@PathVariable("id") int id) {
+        return userService.find(id);
+    }
+
+    @PostMapping("/api/user/")
+    public User create(@RequestBody User user) {
+        return userService.create(user);
+    }
+
+    @PutMapping("/api/user/")
+    public User update(@RequestBody User user) {
+        return userService.update(user);
+    }
+
+    @PatchMapping("/api/user/")
+    public User change(@RequestBody User user) {
+        return userService.change(user);
+    }
+
+    @DeleteMapping("/api/user/{id}")
+    public boolean delete(@PathVariable("id") int id) {
+        return userService.remove(id);
+    }
+
+}
+```
