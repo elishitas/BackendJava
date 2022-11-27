@@ -11,7 +11,7 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [Tipos de APIS](#Tipos-de-APIS)
 - [Funcionamiento de las APIS](#Funcionamiento-de-las-APIS)
 - [REST](#REST)
-- [Endpoint](#Endpoint)
+- [Endpoi9nt](#Endpoint)
 - [HTTP-HTTPS](#HTTP-HTTPS)
 - [Definición de JSON](#Definición-de-JSON)
 - [Ciclo completo](#Ciclo-completo)
@@ -20,15 +20,20 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [Spring Framework](#Spring-Framework) 
 - [Maven](#Maven)
 - [Estructura del proyecto](#Estructura-del-proyecto) 
+- [Clase Principal](#Clase-Principal)
 - [Definición de Controller](#Definición-de-Controller)
 - [Creación de un RestController](#Creación-de-un-RestController)
 - [Tipos de mapeos en un rest controller de Spring Boot](#Tipos-de-mapeos-en-un-rest-controller-de-Spring-Boot)
 
 
 ## Semana 2
+- [Model](#Model)
 - [Entity](#Entity)
-- Capa Repository
-- 
+- [Repository](#Repository)
+- [JPA](#JPA)
+- [ORM](#ORM)
+- [Inyección de Dependencias](#Inyección-de-Dependencias)
+- [Servicio](#Servicio)
 - 
 
 # Definición de API
@@ -309,13 +314,23 @@ Java
 
 ![1](https://i.imgur.com/uvX21Io.png)
 
+# Clase Principal
+
+Es la clase principal. Toda aplicación en java debe contener una clase principal con un método main. Dicho método, en caso de implementar una aplicación
+con Spring, deberá llamar al método run de la clase SpringApplication. 
+
+![1](https://i.imgur.com/sVuxFSr.png)
+
 # Definición de Controller
 
-Un *controller* es un componente de Spring capaz de recibir peticiones **http** y responderlas.
+Las clases que definimos como un *controller* es responsable de procesar las llamadas entrantes (**request**) que ingresan a nuestra aplicación,
+validarlas y dar una respuesta (**response**).
 
-Las clases que definimos como un *controller* es responsable de procesar las llamadas entrantes (**request**) que ingresan a nuestra aplicación, validarlas y dar una respuesta (**response**).
+Los controladores sirven para comunicar información entre la vista y el modelo . Es decir yo por ejemplo puedo tener una lista de Personas a nivel del
+Modelo y quiero pasarlo a la vista y que la vista se encargue de mostrar la información que tenemos en el modelo.
 
-Un *rest controller* es un tipo de *controller* que reciben peticiones con un formato de específico que cumple con formatos de solicitud RESTful habitualmente y mayormente en JSON , aunque a veces se usan otros como HTML, XML, o simplemente texto.
+Un *rest controller* es un tipo de *controller* que reciben peticiones con un formato de específico que cumple con formatos de solicitud RESTful
+habitualmente y mayormente en JSON , aunque a veces se usan otros como HTML, XML, o simplemente texto.
 
 # Creación de un RestController
 
@@ -422,9 +437,13 @@ public class UserController {
 
 }
 ```
+# Model
+
+![1](https://i.imgur.com/2zK99Oq.png)
+
 # Entity
 
-Lo más cercano a la base de datos es la entidad como vimos en la Estructura de Capas:
+La idea es que la entidad refleje la estructura de la base de datos entonces es donde guardamos las entidades que se van a corresponder con tablas a la base de datos. Es lo más cercano a la base de datos es la entidad como vimos en la Estructura de Capas:
 
 ![1](https://i.imgur.com/sPkYWBh.png)
 
@@ -441,7 +460,7 @@ que nuestra aplicación necesita mantener persistente para luego recuperarla cua
 particulares que lo distinguen. Por ejemplo, este podría ser un ‘user (usuario)’ sobre el que necesitamos conocer sus atributos como el nombre, edad,
 email, etc
 
-Definición de una entidad
+Definición de una [entidad](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#data.sql.jpa-and-spring-data.entity-classes)
 
 - Defines la entidad con la anotación *`@Entity`*
 - Es necesario una *primary key (PK)* (clave primaria) con *`@ID`*
@@ -453,3 +472,131 @@ Hay otras anotaciones que puedes utilizar.
 - *`@Column`* para definir el nombre de la columna.
 
 ![1](https://i.imgur.com/DlVeKnK.png)
+
+[GeneraredValue](https://javaee.github.io/javaee-spec/javadocs/)
+
+# Repository
+
+Es el siguiente nivel del model.
+
+El repositorio son las interfaces que utilizamos para definir como van accederse a los datos de nuestra base de datos.
+
+![1](https://i.imgur.com/8CLFJyJ.png)
+
+Entonces un micro-servicio lo dividimos en capas, siendo el repository la capa de persistencia que tiene acceso a los datos y que puede manipularlos.
+
+En Spring un ‘**Repository**’ es el componente encargado de resolver el acceso a los datos de nuestro micro-servicio. Si necesitamos guardar, modificar,
+eliminar registros de un ‘User’ del sistema; será entonces el componente *`UserRepository`* el encargado de realizar cambios directos sobre los registros
+de Usuario.
+
+Spring nos provee las funcionalidades básicas para guardar, eliminar y buscar entidades. Para esto tenemos todas las *interfaces* que extienden de
+“org.springframework.data.repository.Repository”.
+
+![1](https://i.imgur.com/jyBN8Dt.png)
+
+Para una entidad *`User`* se puede pensar en las operaciones básicas para crear, modificar y buscar (CRUD).
+
+**CRUD** es un acrónimo que refiere a las cuatro funciones mínimas sobre una entidad –> Create, Read, Update, Delete.
+
+La entidad se ve así:
+
+```
+@Entity
+public class User {
+
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String name;
+    private String surname;
+    private LocalDate birthDate;
+```
+
+Luego se crea una ***interface UserRepository*** que extenderá de ***CrudRepository***. Anotamos la clase ‘UserRepository’ como un
+componente *`@Repository`* .
+
+**CrudRepository** es una interfaz genérica que recibe dos tipos. El primero es la clase que esta interfaz manejará y el segundo es el tipo de dato
+del *ID* de la entidad.
+
+Importante, que NO implementamos la interfaz. Creamos una nueva interfaz y extendemos de ***CrudReposity***. Será Spring el encargado de la
+implementación de la interfaz con la clase concreta.
+
+Los métodos que provee ***CrudRepository*** son:
+
+- **save**: guarda una entidad
+- **saveAll**: guarda las entidades de una lista iterable
+- **findById**: busca por el identificador
+- **existsById**: verifica si existe un identificador
+- **findAll**: devuelve todos los elementos para la entidad
+- **findAllById**: busca todos los elementos que tengan el identificador
+- **count**: devuelve el total de registros de la entidad
+- **deleteById**: elimina un registro para el identificador
+- **delete**: elimina la entidad
+- **deleteAllById**: elimina todos los elementos que correspondan con el id
+- **deleteAll**(Iterable): elimina todos los elementos que se reciban en el parámetro
+- **deleteAll()**: elimina todos los elementos
+
+![1](https://i.imgur.com/fgYKk9F.png)
+
+La interfaz UserRepository que extiende de CrudRepository.
+
+```
+import com.example.springbootcourse.model.User;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends CrudRepository<User, Long> {
+}
+```
+Con esto ya tenemos creado el repository con las operaciones CRUD para la entidad.
+
+JPA:
+
+```
+package com.academia.app.rest.model.repositories;
+
+import com.academia.app.rest.model.entities.ContactEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ContactRepository extends JpaRepository<ContactEntity, Integer> {
+}
+```
+
+# JPA
+
+JPA (**J**ava **P**ersistence **A**PI) es una especificación de Java, standar, para un framework ORM.  Quiere decir que son una serie de reglas que Java define para que cualquier framework que quiera interactuar con la BD de Java, tenga que seguir.
+
+Los frameworks mas populares de Java para este fin son:
+
+  - Hibernate
+  - TopLink
+  - EclipseLink
+  - ObjectDB
+
+JPA utiliza anotaciones para conectar clases a tablas de la BD y así evitar hacerlo de manera nativa con SQL.
+
+  - `@Entity`. Indica a una clase de java que esta representando una tabla de nuestra BD.
+  - `@Table`. Recibe el nombre de la tabla a la cual esta mapeando la clase.
+  - `@column`. Se le pone a los atributos de la clase, no es obligatoria, se indica sólo cuando el nombre de la columna es diferente al nombre del
+  - atributo de la tabla.
+  - `@id` and `@EmbededID`. Es el atributo como clave primaria de la tabla dentro de la clase. `@id` se utiliza cuando es clave primaria sencilla
+    y 
+  - `@EmbededID` cuando es una clave primaria compuesta.
+  - `@GeneratedValue`. Permite generar automáticamente generar valores para las clases primarias en nuestras clases
+  - `@OneToMany` and `@MatyToOne`. Representar relaciones
+
+JPA es un conjunto de especificaciones ORM
+
+# ORM
+
+ORM (**O**bject **R**elational **M**apping) Es una **herramienta** que realiza un **mapeo** que nos permite **transformar** los objetos de la base de
+datos como **tablas y esquemas a clases con atributos** en código de programación para poder manipular la información de una forma más fácil sin requerir
+de SQL.
+
+Spring ofrece la posibilidad de aplicar esta técnica utilizando Hibernete
+
+# Inyección de Dependencias
+
+# Servicio
