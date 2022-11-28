@@ -440,165 +440,9 @@ public class UserController {
 
 }
 ```
-# Model
+## Semana 2
 
-![1](https://i.imgur.com/2zK99Oq.png)
-
-# Entity
-
-La idea es que la entidad refleje la estructura de la base de datos entonces es donde guardamos las entidades que se van a corresponder con tablas a la base de datos. Es lo más cercano a la base de datos es la entidad como vimos en la Estructura de Capas:
-
-![1](https://i.imgur.com/sPkYWBh.png)
-
-Una [entidad](https://desarrollodesoftware.home.blog/2019/03/03/que-es-una-entidad-en-java-ee-y-como-declararla/) en Java es un objeto de persistencia.
-
-La persistencia es la habilidad de una aplicación para mantener(persistir) y recuperar información de sistemas de almacenamiento no volátiles.
-
-Una entidad representa una tabla en una base de datos, y cada instancia de entidad corresponde a una fila en la tabla.
-
-El estado de una entidad se representa por campos de persistencia o propiedades de persistencia.
-
-Una entidad es la representación de información que necesitamos en nuestra aplicación.Esta entidad podría ser un usuario, un producto o cualquier dato
-que nuestra aplicación necesita mantener persistente para luego recuperarla cuando la necesite. Es un objeto, elemento o ‘cosa’ con atributos
-particulares que lo distinguen. Por ejemplo, este podría ser un ‘user (usuario)’ sobre el que necesitamos conocer sus atributos como el nombre, edad,
-email, etc
-
-Definición de una [entidad](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#data.sql.jpa-and-spring-data.entity-classes)
-
-- Defines la entidad con la anotación *`@Entity`*
-- Es necesario una *primary key (PK)* (clave primaria) con *`@ID`*
-- El valor de esta *PK* es generada automáticamente con esta anotación *`@GeneratedValue`* con el valor AUTO
-
-Hay otras anotaciones que puedes utilizar.
-
-- *`@Table`* para definir explícitamente el nombre de la tabla.
-- *`@Column`* para definir el nombre de la columna.
-
-![1](https://i.imgur.com/DlVeKnK.png)
-
-[GeneraredValue](https://javaee.github.io/javaee-spec/javadocs/)
-
-# Repository
-
-Es el siguiente nivel del model.
-
-El repositorio son las interfaces que utilizamos para definir como van accederse a los datos de nuestra base de datos.
-
-![1](https://i.imgur.com/8CLFJyJ.png)
-
-Entonces un micro-servicio lo dividimos en capas, siendo el repository la capa de persistencia que tiene acceso a los datos y que puede manipularlos.
-
-En Spring un ‘**Repository**’ es el componente encargado de resolver el acceso a los datos de nuestro micro-servicio. Si necesitamos guardar, modificar,
-eliminar registros de un ‘User’ del sistema; será entonces el componente *`UserRepository`* el encargado de realizar cambios directos sobre los registros
-de Usuario.
-
-Spring nos provee las funcionalidades básicas para guardar, eliminar y buscar entidades. Para esto tenemos todas las *interfaces* que extienden de
-“org.springframework.data.repository.Repository”.
-
-![1](https://i.imgur.com/jyBN8Dt.png)
-
-Para una entidad *`User`* se puede pensar en las operaciones básicas para crear, modificar y buscar (CRUD).
-
-**CRUD** es un acrónimo que refiere a las cuatro funciones mínimas sobre una entidad –> Create, Read, Update, Delete.
-
-La entidad se ve así:
-
-```
-@Entity
-public class User {
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String name;
-    private String surname;
-    private LocalDate birthDate;
-```
-
-Luego se crea una ***interface UserRepository*** que extenderá de ***CrudRepository***. Anotamos la clase ‘UserRepository’ como un
-componente *`@Repository`* .
-
-**CrudRepository** es una interfaz genérica que recibe dos tipos. El primero es la clase que esta interfaz manejará y el segundo es el tipo de dato
-del *ID* de la entidad.
-
-Importante, que NO implementamos la interfaz. Creamos una nueva interfaz y extendemos de ***CrudReposity***. Será Spring el encargado de la
-implementación de la interfaz con la clase concreta.
-
-Los métodos que provee ***CrudRepository*** son:
-
-- **save**: guarda una entidad
-- **saveAll**: guarda las entidades de una lista iterable
-- **findById**: busca por el identificador
-- **existsById**: verifica si existe un identificador
-- **findAll**: devuelve todos los elementos para la entidad
-- **findAllById**: busca todos los elementos que tengan el identificador
-- **count**: devuelve el total de registros de la entidad
-- **deleteById**: elimina un registro para el identificador
-- **delete**: elimina la entidad
-- **deleteAllById**: elimina todos los elementos que correspondan con el id
-- **deleteAll**(Iterable): elimina todos los elementos que se reciban en el parámetro
-- **deleteAll()**: elimina todos los elementos
-
-![1](https://i.imgur.com/fgYKk9F.png)
-
-La interfaz UserRepository que extiende de CrudRepository.
-
-```
-import com.example.springbootcourse.model.User;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface UserRepository extends CrudRepository<User, Long> {
-}
-```
-Con esto ya tenemos creado el repository con las operaciones CRUD para la entidad.
-
-JPA:
-
-```
-package com.academia.app.rest.model.repositories;
-
-import com.academia.app.rest.model.entities.ContactEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface ContactRepository extends JpaRepository<ContactEntity, Integer> {
-}
-```
-
-# JPA
-
-JPA (**J**ava **P**ersistence **A**PI) es una especificación de Java, standar, para un framework ORM.  Quiere decir que son una serie de reglas que Java define para que cualquier framework que quiera interactuar con la BD de Java, tenga que seguir.
-
-Los frameworks mas populares de Java para este fin son:
-
-  - Hibernate
-  - TopLink
-  - EclipseLink
-  - ObjectDB
-
-JPA utiliza anotaciones para conectar clases a tablas de la BD y así evitar hacerlo de manera nativa con SQL.
-
-  - `@Entity`. Indica a una clase de java que esta representando una tabla de nuestra BD.
-  - `@Table`. Recibe el nombre de la tabla a la cual esta mapeando la clase.
-  - `@column`. Se le pone a los atributos de la clase, no es obligatoria, se indica sólo cuando el nombre de la columna es diferente al nombre del
-  - atributo de la tabla.
-  - `@id` and `@EmbededID`. Es el atributo como clave primaria de la tabla dentro de la clase. `@id` se utiliza cuando es clave primaria sencilla
-    y 
-  - `@EmbededID` cuando es una clave primaria compuesta.
-  - `@GeneratedValue`. Permite generar automáticamente generar valores para las clases primarias en nuestras clases
-  - `@OneToMany` and `@MatyToOne`. Representar relaciones
-
-JPA es un conjunto de especificaciones ORM
-
-# ORM
-
-ORM (**O**bject **R**elational **M**apping) Es una **herramienta** que realiza un **mapeo** que nos permite **transformar** los objetos de la base de
-datos como **tablas y esquemas a clases con atributos** en código de programación para poder manipular la información de una forma más fácil sin requerir
-de SQL.
-
-Spring ofrece la posibilidad de aplicar esta técnica utilizando Hibernete
+# Services
 
 # Inyección de Dependencias
 
@@ -637,9 +481,46 @@ con el fin de no acoplar la clase a la implementación que está utilizando. Est
     debe tener cuidado que, cuando se vaya a utilizar la anotación, se debe estar totalmente seguro que el objeto que se va a inyectar es un componente
     de Spring
 
-# DTO
+# Model
 
-Una de las problemáticas más comunes cuando desarrollamos aplicaciones, es diseñar la forma en que la información debe viajar desde la capa de servicios
+![1](https://i.imgur.com/2zK99Oq.png)
+
+# JPA
+
+JPA (**J**ava **P**ersistence **A**PI) es una especificación de Java, standar, para un framework ORM.  Quiere decir que son una serie de reglas que Java define para que cualquier framework que quiera interactuar con la BD de Java, tenga que seguir.
+
+Los frameworks mas populares de Java para este fin son:
+
+  - Hibernate
+  - TopLink
+  - EclipseLink
+  - ObjectDB
+
+JPA utiliza anotaciones para conectar clases a tablas de la BD y así evitar hacerlo de manera nativa con SQL.
+
+  - `@Entity`. Indica a una clase de java que esta representando una tabla de nuestra BD.
+  - `@Table`. Recibe el nombre de la tabla a la cual esta mapeando la clase.
+  - `@column`. Se le pone a los atributos de la clase, no es obligatoria, se indica sólo cuando el nombre de la columna es diferente al nombre del
+  - atributo de la tabla.
+  - `@id` and `@EmbededID`. Es el atributo como clave primaria de la tabla dentro de la clase. `@id` se utiliza cuando es clave primaria sencilla
+    y 
+  - `@EmbededID` cuando es una clave primaria compuesta.
+  - `@GeneratedValue`. Permite generar automáticamente generar valores para las clases primarias en nuestras clases
+  - `@OneToMany` and `@MatyToOne`. Representar relaciones
+
+JPA es un conjunto de especificaciones ORM
+
+# ORM
+
+ORM (**O**bject **R**elational **M**apping) Es una **herramienta** que realiza un **mapeo** que nos permite **transformar** los objetos de la base de
+datos como **tablas y esquemas a clases con atributos** en código de programación para poder manipular la información de una forma más fácil sin requerir
+de SQL.
+
+Spring ofrece la posibilidad de aplicar esta técnica utilizando Hibernete
+
+# Domain
+
+DTO Una de las problemáticas más comunes cuando desarrollamos aplicaciones, es diseñar la forma en que la información debe viajar desde la capa de servicios
 a las aplicaciones o capa de presentación, ya que muchas veces por desconocimiento o pereza, utilizamos las clases de entidades para retornar los datos,
 lo que ocasiona que retornemos más datos de los necesarios o incluso, tengamos que ir en más de una ocasión a la capa de servicios para recuperar los
 datos requeridos.
@@ -820,8 +701,130 @@ u orígenes de datos. Además, nos permite controlar el formato, nombre y tipos 
 determinado requerimiento. Finalmente, si por alguna razón, el modelo de datos cambio (y con ello las entidades) el cliente no se afectará, pues seguirá
 recibiendo el mismo DTO.
 
+# Entity
+
+La idea es que la entidad refleje la estructura de la base de datos entonces es donde guardamos las entidades que se van a corresponder con tablas a la base de datos. Es lo más cercano a la base de datos es la entidad como vimos en la Estructura de Capas:
+
+![1](https://i.imgur.com/sPkYWBh.png)
+
+Una [entidad](https://desarrollodesoftware.home.blog/2019/03/03/que-es-una-entidad-en-java-ee-y-como-declararla/) en Java es un objeto de persistencia.
+
+La persistencia es la habilidad de una aplicación para mantener(persistir) y recuperar información de sistemas de almacenamiento no volátiles.
+
+Una entidad representa una tabla en una base de datos, y cada instancia de entidad corresponde a una fila en la tabla.
+
+El estado de una entidad se representa por campos de persistencia o propiedades de persistencia.
+
+Una entidad es la representación de información que necesitamos en nuestra aplicación.Esta entidad podría ser un usuario, un producto o cualquier dato
+que nuestra aplicación necesita mantener persistente para luego recuperarla cuando la necesite. Es un objeto, elemento o ‘cosa’ con atributos
+particulares que lo distinguen. Por ejemplo, este podría ser un ‘user (usuario)’ sobre el que necesitamos conocer sus atributos como el nombre, edad,
+email, etc
+
+Definición de una [entidad](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#data.sql.jpa-and-spring-data.entity-classes)
+
+- Defines la entidad con la anotación *`@Entity`*
+- Es necesario una *primary key (PK)* (clave primaria) con *`@ID`*
+- El valor de esta *PK* es generada automáticamente con esta anotación *`@GeneratedValue`* con el valor AUTO
+
+Hay otras anotaciones que puedes utilizar.
+
+- *`@Table`* para definir explícitamente el nombre de la tabla.
+- *`@Column`* para definir el nombre de la columna.
+
+![1](https://i.imgur.com/DlVeKnK.png)
+
+[GeneraredValue](https://javaee.github.io/javaee-spec/javadocs/)
+
+# Repository
+
+Es el siguiente nivel del model.
+
+El repositorio son las interfaces que utilizamos para definir como van accederse a los datos de nuestra base de datos.
+
+![1](https://i.imgur.com/8CLFJyJ.png)
+
+Entonces un micro-servicio lo dividimos en capas, siendo el repository la capa de persistencia que tiene acceso a los datos y que puede manipularlos.
+
+En Spring un ‘**Repository**’ es el componente encargado de resolver el acceso a los datos de nuestro micro-servicio. Si necesitamos guardar, modificar,
+eliminar registros de un ‘User’ del sistema; será entonces el componente *`UserRepository`* el encargado de realizar cambios directos sobre los registros
+de Usuario.
+
+Spring nos provee las funcionalidades básicas para guardar, eliminar y buscar entidades. Para esto tenemos todas las *interfaces* que extienden de
+“org.springframework.data.repository.Repository”.
+
+![1](https://i.imgur.com/jyBN8Dt.png)
+
+Para una entidad *`User`* se puede pensar en las operaciones básicas para crear, modificar y buscar (CRUD).
+
+**CRUD** es un acrónimo que refiere a las cuatro funciones mínimas sobre una entidad –> Create, Read, Update, Delete.
+
+La entidad se ve así:
+
+```
+@Entity
+public class User {
+
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String name;
+    private String surname;
+    private LocalDate birthDate;
+```
+
+Luego se crea una ***interface UserRepository*** que extenderá de ***CrudRepository***. Anotamos la clase ‘UserRepository’ como un
+componente *`@Repository`* .
+
+**CrudRepository** es una interfaz genérica que recibe dos tipos. El primero es la clase que esta interfaz manejará y el segundo es el tipo de dato
+del *ID* de la entidad.
+
+Importante, que NO implementamos la interfaz. Creamos una nueva interfaz y extendemos de ***CrudReposity***. Será Spring el encargado de la
+implementación de la interfaz con la clase concreta.
+
+Los métodos que provee ***CrudRepository*** son:
+
+- **save**: guarda una entidad
+- **saveAll**: guarda las entidades de una lista iterable
+- **findById**: busca por el identificador
+- **existsById**: verifica si existe un identificador
+- **findAll**: devuelve todos los elementos para la entidad
+- **findAllById**: busca todos los elementos que tengan el identificador
+- **count**: devuelve el total de registros de la entidad
+- **deleteById**: elimina un registro para el identificador
+- **delete**: elimina la entidad
+- **deleteAllById**: elimina todos los elementos que correspondan con el id
+- **deleteAll**(Iterable): elimina todos los elementos que se reciban en el parámetro
+- **deleteAll()**: elimina todos los elementos
+
+![1](https://i.imgur.com/fgYKk9F.png)
+
+La interfaz UserRepository que extiende de CrudRepository.
+
+```
+import com.example.springbootcourse.model.User;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends CrudRepository<User, Long> {
+}
+```
+Con esto ya tenemos creado el repository con las operaciones CRUD para la entidad.
+
+JPA:
+
+```
+package com.academia.app.rest.model.repositories;
+
+import com.academia.app.rest.model.entities.ContactEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ContactRepository extends JpaRepository<ContactEntity, Integer> {
+}
+```
+
 # Mappers
 
-# Services
 
 
