@@ -27,16 +27,17 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 
 
 ## Semana 2
+- [Services](#Services)
+- [Inyección de Dependencias](#Inyección-de-Dependencias)
 - [Model](#Model)
+- [JPA](#JPA) 
+- [ORM](#ORM) 
+- [Domain](#Domain)
 - [Entity](#Entity)
 - [Repository](#Repository)
-- [JPA](#JPA)
-- [ORM](#ORM)
-- [Inyección de Dependencias](#Inyección-de-Dependencias)
-- [DTO](#DTO)
 - [Mappers](#Mappers)
-- [Services](#Services)
--
+
+## Semana 1
 
 # Definición de API
 
