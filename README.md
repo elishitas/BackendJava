@@ -33,8 +33,10 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [JPA](#JPA)
 - [ORM](#ORM)
 - [Inyección de Dependencias](#Inyección-de-Dependencias)
+- [DTO](#DTO)
+- [Mappers](#Mappers)
 - [Servicio](#Servicio)
-- 
+-
 
 # Definición de API
 
@@ -599,4 +601,226 @@ Spring ofrece la posibilidad de aplicar esta técnica utilizando Hibernete
 
 # Inyección de Dependencias
 
-# Servicio
+En informática, **inyección de dependencias** (en inglés *Dependency Injection*, DI) es un patrón de diseño orientado a objetos, en el que se suministran
+objetos a una clase en lugar de ser la propia clase la que cree dichos objetos. 
+
+Esos objetos cumplen contratos que necesitan nuestras clases para poder funcionar (de ahí el concepto de *dependencia*). 
+
+Nuestras clases no crean los objetos que necesitan, sino que se los suministra otra clase 'contenedora' que inyectará la implementación deseada a nuestro
+contrato. En otras palabras, se trata de un patrón de diseño que se encarga de extraer la responsabilidad de la creación de instancias de un componente
+para delegarla en otro.
+
+Patrón de Diseño: Es una solución general reusable que puede ser aplicada a problemas que ocurren comúnmente en el desarrollo de software, es la
+descripción o plantilla de como resolver un problema que puede ser usada en diferentes situaciones. Los patrones de diseño son soluciones probadas,
+expresivas y fáciles de mantener.
+
+Otra Explicacion de Dependencias: Consiste en pasar la dependencia a la clase que la va a utilizar, en lugar de crearla internamente dentro de esa clase,
+con el fin de no acoplar la clase a la implementación que está utilizando. Este proceso se le conoce como inyectar una dependencia.
+
+  - Inversión de control(IoC): Se refiere a que es un framework (en este caso Spring) el que toma control de los objetos. Spring contiene un contenedor
+  de IoC, el cual se encarga de administrar y crear instancias de objetos que se conocen como *Beans* o *Components*. Para esto, Spring utiliza la 
+  anotación `@Autowired` para hacer inyección de dependencias.
+    
+    - Existen tres maneras de usar la inyección dependencias con `@Autowired`: en el atributo, en el constructor y en el método set. A pesar de que
+    hacerlo en el atributo (Field-based) es lo más práctico, elegante y la manera en que mejor se lee; lo mejor es hacerlo en el constructor
+    (Constructor-based) para poder declarar los atributos inyectados como final para que sean inmutables, y además es muy recomendado para declarar
+    dependencias obligatorias. Asimismo se evita que la dependencia en un momento determinado pueda ser null.
+        
+    - En Java, al declarar un objeto y no inicializarlo, obtiene por defecto el valor `null`. Esto porque en Java debemos crear los objetos antes de
+    poderlos utilizar. Ejemplo: `private ProductMapper mapper;`. Si lo utilizamos (Ej: `mapper.toProducts(productos);`), no lo estamos inicializando, y
+    tendríamos algo como `null.toProducts(productos);`, y el objeto *null* no puede llamar al método *toProducts()*. Spring nos ayuda a crear estos
+    objetos gracias a su IoC.
+    
+    - Al utilizar `@Autowired`, le damos a entender a Spring que los objetos que tengan esa anotación, le cedemos el control a Spring para que cree las
+    instancias de esos objetos. Gracias a eso, no nos preocuparemos por crear objetos manualmente, lo cual puede ser una mala práctica. Solo se
+    debe tener cuidado que, cuando se vaya a utilizar la anotación, se debe estar totalmente seguro que el objeto que se va a inyectar es un componente
+    de Spring
+
+# DTO
+
+Una de las problemáticas más comunes cuando desarrollamos aplicaciones, es diseñar la forma en que la información debe viajar desde la capa de servicios
+a las aplicaciones o capa de presentación, ya que muchas veces por desconocimiento o pereza, utilizamos las clases de entidades para retornar los datos,
+lo que ocasiona que retornemos más datos de los necesarios o incluso, tengamos que ir en más de una ocasión a la capa de servicios para recuperar los
+datos requeridos.
+
+El patrón DTO tiene como finalidad de crear un objeto plano (POJO) con una serie de atributos que puedan ser enviados o recuperados del servidor en una
+sola invocación, de tal forma que un DTO puede contener información de múltiples fuentes o tablas y concentrarlas en una única clase simple.
+
+![1](https://i.imgur.com/VQdhQT4.png)
+
+En la imagen anterior podemos apreciar gráficamente como es que un **DTO** se conforma de una serie de **atributos** que puede o no, estar conformados
+por más de una **fuente de datos**. 
+
+Para esto, el servidor obtiene la información de las tablas customer y address (izquierda) y realiza un mapping con el DTO (derecha). 
+
+Adicional, la información puede ser pasada de un lado intacta como es el caso del id , fullName , country , address  y zipCode  o ser una derivada de más
+de un campo, como es el caso del fullName , el cual es la unión del firstname  y lastname .
+
+Otra de las ventajas no tan claras en la imagen, es que nos permite omitir información que el usuario no requiere, como es el caso de password. No es
+solo que no lo requiere, sino que además podría ser una gran falla de seguridad está enviando los passwords, es por ello que en el **DTO** lo omitimos.
+
+Características de un DTO
+
+Si bien un DTO es simplemente un objeto plano, sí que tiene que cumplir algunas reglas para poder considerar que hemos creado un DTO correctamente
+implementado:
+
+  - Solo lectura: Dado que el objetivo de un DTO es utilizarlo como un objeto de transferencia entre el cliente y el servidor, es importante evitar tener
+  operaciones de negocio o métodos que realicen cálculos sobre los datos, es por ello que solo deberemos de tener los métodos GET y SET de los
+  respectivos atributos del DTO.
+  - Serializable: Es claro que, si los objetos tendrán que viajar por la red, deberán de poder ser serializables, pero no hablamos solamente de la clase
+  en sí, sino que también todos los atributos que contenga el DTO deberán ser fácilmente serializables. Un error clásico en Java es, por ejemplo, crear
+  atributos de tipo Date o Calendar para transmitir la fecha u hora, ya que estos no tienen una forma estándar para serializarse por ejemplo en
+  Webservices o REST.
+
+Entity vs DTO
+
+Un error muy frecuente es el hecho de utilizar las clases de Entidad para utilizarlos para la transmisión de datos entre el cliente y el servidor. Solo
+para entrar en contexto, las **entidades** son clases que representa al modelo de datos, o mapea directamente contra una tabla de la base de datos. Dicho
+esto, las **entidades** son clases que fueron diseñadas para mapear contra la base de datos, no para ser una vista para una pantalla o servicio
+determinado, lo que provoca que muchos de los campos no puedan ser serializables, no contengan todos los campos necesarios un servicio, ya sea que tengan
+de más o de menos.
+
+El hecho de que las entidades no contengan todos los atributos necesarios o que no sean serializables trae otros problemas, como la necesidad de agregar
+más atributos a las entidades con el único objetivo de poder cubrir los requerimientos de transferencia de datos, dejando de lado el verdadero propósito
+de la entidad, que es únicamente mapear contra la base de datos, lo que va llevando lentamente a ir creando una mezcla entre Entidad y DTO.
+
+![1](https://i.imgur.com/IaWBT0t.png)
+
+Ejemplo de un DTO
+
+Para comprender mejor como es que se utilizan los **DTO**, vamos a realizar un análisis con un ejemplo de un servicio que recupera los datos todos los
+datos de los clientes. Para esto, veamos como quedarían las Entidades utilizando el API de JPA de Java.
+
+Entidad Customer:
+
+```
+package dtopattern;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="customers")
+public class Customer {
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	private Long id;
+	@Column(name="firstname")
+	private String firstname;
+	@Column(name="lastname")
+	private String lastname;
+	@Column(name="password")
+	private String password;
+	
+	/** GET and SET */
+}
+
+```
+Entidad Address:
+
+```
+package dtopattern;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="address")
+public class Address {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+	@ManyToMany()
+	@JoinColumn(name="fk_customer")
+	private Customer customer;
+	@Column(name="country")
+	private String country;
+	@Column(name="address")
+	private String address;
+	@Column(name="zipcode")
+	private String zipCode;
+	
+	/** GET and SET */
+}
+```
+Por otro lado, tenemos el DTO que contiene los datos del cliente (Customer) y su dirección (Address)
+
+```
+package dtopattern;
+
+import java.io.Serializable;
+
+public class CustomerDTO implements Serializable{
+	
+	private Long id;
+	private String FullName;
+	private String country;
+	private String Address;
+	private String zipCode;
+	
+	/** GET and SET */
+}
+```
+Finalmente, veamos cómo quedaría un servicio que aproveche las ventajas del patrón DTO para transmitir los datos:
+
+```
+package dtopattern;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+@Path("customers")
+public class CustomerService {
+	
+	@GET
+	@PathParam("{customerId}")
+	private Response findCustomer(@PathParam("customerId") Long customerId) {
+		Customer customer = customerDAO.findCustomerById(customerId); //Entity
+		Address address = customerDAO.findAddressByCustomer(customerId); //Entity
+		
+		//Create dto
+		CustomerDTO dto = new CustomerDTO();
+		dto.setAddress(address.getAddress());
+		dto.setCountry(address.getCountry());
+		dto.setZipCode(address.getZipCode());
+		dto.setFullName(customer.getFirstname() + " " + customer.getLastname());
+		dto.setId(customer.getId());
+		
+		//Return DTO
+		return Response.ok(dto, MediaType.APPLICATION_JSON).build();
+	}
+}
+
+```
+El ejemplo que acabamos de ver, corresponde a una implementación de un servicio **REST** utilizando el API JAX-RS de Java, el cual indica que existe un
+servicio **GET** en la url *`/customers/{customerID}`*, donde *`{customerId}`* corresponde al **ID** del cliente a buscar. 
+
+En el servicio, realizamos la consulta del cliente y su dirección en dos pasos, para finalmente, mapear los datos de estas dos entidades en un simple
+**DTO** que será retornado.
+
+Conclusión: Como hemos podido demostrar, los DTO son un patrón muy efectivo para transmitir información entre un cliente y un servidor, pues permite 
+crear estructuras de datos independientes de nuestro modelo de datos, lo que nos permite crear cuantas “vistas” sean necesarias de un conjunto de tablas
+u orígenes de datos. Además, nos permite controlar el formato, nombre y tipos de datos con los que transmitimos los datos para ajustarnos a un
+determinado requerimiento. Finalmente, si por alguna razón, el modelo de datos cambio (y con ello las entidades) el cliente no se afectará, pues seguirá
+recibiendo el mismo DTO.
+
+# Mappers
+
+# Services
+
+
