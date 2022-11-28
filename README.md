@@ -30,12 +30,13 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [Services](#Services)
 - [Inyección de Dependencias](#Inyección-de-Dependencias)
 - [Model](#Model)
+- [Entity](#Entity)
 - [JPA](#JPA) 
 - [ORM](#ORM) 
 - [Domain](#Domain)
-- [Entity](#Entity)
-- [Repository](#Repository)
 - [Mappers](#Mappers)
+- [Repository](#Repository)
+
 
 ## Semana 1
 
@@ -485,6 +486,40 @@ con el fin de no acoplar la clase a la implementación que está utilizando. Est
 
 ![1](https://i.imgur.com/2zK99Oq.png)
 
+# Entity
+
+La idea es que la entidad refleje la estructura de la base de datos entonces es donde guardamos las entidades que se van a corresponder con tablas a la base de datos. Es lo más cercano a la base de datos es la entidad como vimos en la Estructura de Capas:
+
+![1](https://i.imgur.com/sPkYWBh.png)
+
+Una [entidad](https://desarrollodesoftware.home.blog/2019/03/03/que-es-una-entidad-en-java-ee-y-como-declararla/) en Java es un objeto de persistencia.
+
+La persistencia es la habilidad de una aplicación para mantener(persistir) y recuperar información de sistemas de almacenamiento no volátiles.
+
+Una entidad representa una tabla en una base de datos, y cada instancia de entidad corresponde a una fila en la tabla.
+
+El estado de una entidad se representa por campos de persistencia o propiedades de persistencia.
+
+Una entidad es la representación de información que necesitamos en nuestra aplicación.Esta entidad podría ser un usuario, un producto o cualquier dato
+que nuestra aplicación necesita mantener persistente para luego recuperarla cuando la necesite. Es un objeto, elemento o ‘cosa’ con atributos
+particulares que lo distinguen. Por ejemplo, este podría ser un ‘user (usuario)’ sobre el que necesitamos conocer sus atributos como el nombre, edad,
+email, etc
+
+Definición de una [entidad](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#data.sql.jpa-and-spring-data.entity-classes)
+
+- Defines la entidad con la anotación *`@Entity`*
+- Es necesario una *primary key (PK)* (clave primaria) con *`@ID`*
+- El valor de esta *PK* es generada automáticamente con esta anotación *`@GeneratedValue`* con el valor AUTO
+
+Hay otras anotaciones que puedes utilizar.
+
+- *`@Table`* para definir explícitamente el nombre de la tabla.
+- *`@Column`* para definir el nombre de la columna.
+
+![1](https://i.imgur.com/DlVeKnK.png)
+
+[GeneraredValue](https://javaee.github.io/javaee-spec/javadocs/)
+
 # JPA
 
 JPA (**J**ava **P**ersistence **A**PI) es una especificación de Java, standar, para un framework ORM.  Quiere decir que son una serie de reglas que Java define para que cualquier framework que quiera interactuar con la BD de Java, tenga que seguir.
@@ -701,39 +736,14 @@ u orígenes de datos. Además, nos permite controlar el formato, nombre y tipos 
 determinado requerimiento. Finalmente, si por alguna razón, el modelo de datos cambio (y con ello las entidades) el cliente no se afectará, pues seguirá
 recibiendo el mismo DTO.
 
-# Entity
+# Mappers
 
-La idea es que la entidad refleje la estructura de la base de datos entonces es donde guardamos las entidades que se van a corresponder con tablas a la base de datos. Es lo más cercano a la base de datos es la entidad como vimos en la Estructura de Capas:
+El modelo [mapper](http://modelmapper.org/user-manual/spring-integration/) tiene la finalidad de facilitar la conversión, el traspaso de unos datos de un objeto entity a otra entity.
 
-![1](https://i.imgur.com/sPkYWBh.png)
+El objetivo de ModeMaper es hacernos el mapeo entre objetos más sencillo, para ello, tenemos que definir el modelo (en este caso, el objeto inicial) que
+se mapeará y el modelo final (en este caso, el objeto final) sobre el que volcará los valores mapeados.
 
-Una [entidad](https://desarrollodesoftware.home.blog/2019/03/03/que-es-una-entidad-en-java-ee-y-como-declararla/) en Java es un objeto de persistencia.
-
-La persistencia es la habilidad de una aplicación para mantener(persistir) y recuperar información de sistemas de almacenamiento no volátiles.
-
-Una entidad representa una tabla en una base de datos, y cada instancia de entidad corresponde a una fila en la tabla.
-
-El estado de una entidad se representa por campos de persistencia o propiedades de persistencia.
-
-Una entidad es la representación de información que necesitamos en nuestra aplicación.Esta entidad podría ser un usuario, un producto o cualquier dato
-que nuestra aplicación necesita mantener persistente para luego recuperarla cuando la necesite. Es un objeto, elemento o ‘cosa’ con atributos
-particulares que lo distinguen. Por ejemplo, este podría ser un ‘user (usuario)’ sobre el que necesitamos conocer sus atributos como el nombre, edad,
-email, etc
-
-Definición de una [entidad](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#data.sql.jpa-and-spring-data.entity-classes)
-
-- Defines la entidad con la anotación *`@Entity`*
-- Es necesario una *primary key (PK)* (clave primaria) con *`@ID`*
-- El valor de esta *PK* es generada automáticamente con esta anotación *`@GeneratedValue`* con el valor AUTO
-
-Hay otras anotaciones que puedes utilizar.
-
-- *`@Table`* para definir explícitamente el nombre de la tabla.
-- *`@Column`* para definir el nombre de la columna.
-
-![1](https://i.imgur.com/DlVeKnK.png)
-
-[GeneraredValue](https://javaee.github.io/javaee-spec/javadocs/)
+![1](https://i.imgur.com/vMHyh1W.png)
 
 # Repository
 
@@ -824,7 +834,7 @@ public interface ContactRepository extends JpaRepository<ContactEntity, Integer>
 }
 ```
 
-# Mappers
+
 
 
 
