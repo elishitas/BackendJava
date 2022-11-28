@@ -35,7 +35,7 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [Inyección de Dependencias](#Inyección-de-Dependencias)
 - [DTO](#DTO)
 - [Mappers](#Mappers)
-- [Servicio](#Servicio)
+- [Services](#Services)
 -
 
 # Definición de API
