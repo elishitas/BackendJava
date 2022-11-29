@@ -31,11 +31,11 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [Inyección de Dependencias](#Inyección-de-Dependencias)
 - [Model](#Model)
 - [Entity](#Entity)
-- [JPA](#JPA) 
-- [ORM](#ORM) 
 - [Domain](#Domain)
 - [Mappers](#Mappers)
 - [Repository](#Repository)
+- [JPA](#JPA) 
+- [ORM](#ORM) 
 
 
 ## Semana 1
@@ -520,39 +520,6 @@ Hay otras anotaciones que puedes utilizar.
 
 [GeneraredValue](https://javaee.github.io/javaee-spec/javadocs/)
 
-# JPA
-
-JPA (**J**ava **P**ersistence **A**PI) es una especificación de Java, standar, para un framework ORM.  Quiere decir que son una serie de reglas que Java define para que cualquier framework que quiera interactuar con la BD de Java, tenga que seguir.
-
-Los frameworks mas populares de Java para este fin son:
-
-  - Hibernate
-  - TopLink
-  - EclipseLink
-  - ObjectDB
-
-JPA utiliza anotaciones para conectar clases a tablas de la BD y así evitar hacerlo de manera nativa con SQL.
-
-  - `@Entity`. Indica a una clase de java que esta representando una tabla de nuestra BD.
-  - `@Table`. Recibe el nombre de la tabla a la cual esta mapeando la clase.
-  - `@column`. Se le pone a los atributos de la clase, no es obligatoria, se indica sólo cuando el nombre de la columna es diferente al nombre del
-  - atributo de la tabla.
-  - `@id` and `@EmbededID`. Es el atributo como clave primaria de la tabla dentro de la clase. `@id` se utiliza cuando es clave primaria sencilla
-    y 
-  - `@EmbededID` cuando es una clave primaria compuesta.
-  - `@GeneratedValue`. Permite generar automáticamente generar valores para las clases primarias en nuestras clases
-  - `@OneToMany` and `@MatyToOne`. Representar relaciones
-
-JPA es un conjunto de especificaciones ORM
-
-# ORM
-
-ORM (**O**bject **R**elational **M**apping) Es una **herramienta** que realiza un **mapeo** que nos permite **transformar** los objetos de la base de
-datos como **tablas y esquemas a clases con atributos** en código de programación para poder manipular la información de una forma más fácil sin requerir
-de SQL.
-
-Spring ofrece la posibilidad de aplicar esta técnica utilizando Hibernete
-
 # Domain
 
 DTO Una de las problemáticas más comunes cuando desarrollamos aplicaciones, es diseñar la forma en que la información debe viajar desde la capa de servicios
@@ -833,6 +800,38 @@ import org.springframework.stereotype.Repository;
 public interface ContactRepository extends JpaRepository<ContactEntity, Integer> {
 }
 ```
+# JPA
+
+JPA (**J**ava **P**ersistence **A**PI) es una especificación de Java, standar, para un framework ORM.  Quiere decir que son una serie de reglas que Java define para que cualquier framework que quiera interactuar con la BD de Java, tenga que seguir.
+
+Los frameworks mas populares de Java para este fin son:
+
+  - Hibernate
+  - TopLink
+  - EclipseLink
+  - ObjectDB
+
+JPA utiliza anotaciones para conectar clases a tablas de la BD y así evitar hacerlo de manera nativa con SQL.
+
+  - `@Entity`. Indica a una clase de java que esta representando una tabla de nuestra BD.
+  - `@Table`. Recibe el nombre de la tabla a la cual esta mapeando la clase.
+  - `@column`. Se le pone a los atributos de la clase, no es obligatoria, se indica sólo cuando el nombre de la columna es diferente al nombre del
+  - atributo de la tabla.
+  - `@id` and `@EmbededID`. Es el atributo como clave primaria de la tabla dentro de la clase. `@id` se utiliza cuando es clave primaria sencilla
+    y 
+  - `@EmbededID` cuando es una clave primaria compuesta.
+  - `@GeneratedValue`. Permite generar automáticamente generar valores para las clases primarias en nuestras clases
+  - `@OneToMany` and `@MatyToOne`. Representar relaciones
+
+JPA es un conjunto de especificaciones ORM
+
+# ORM
+
+ORM (**O**bject **R**elational **M**apping) Es una **herramienta** que realiza un **mapeo** que nos permite **transformar** los objetos de la base de
+datos como **tablas y esquemas a clases con atributos** en código de programación para poder manipular la información de una forma más fácil sin requerir
+de SQL.
+
+Spring ofrece la posibilidad de aplicar esta técnica utilizando Hibernete
 
 
 
