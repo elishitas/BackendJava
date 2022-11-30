@@ -835,6 +835,9 @@ de SQL.
 
 Spring ofrece la posibilidad de aplicar esta técnica utilizando Hibernete
 
+# Más info:
+
+- [Arquitectura de software y Spring](https://gustavopeiretti.com/es/)
 
 
 
