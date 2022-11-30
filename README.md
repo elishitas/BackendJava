@@ -288,6 +288,8 @@ expondrían un API o Interfaces para poder obtener datos a partir de ellos.
 [Java](https://dev.java/learn/) es un lenguaje de programación de alto nivel que nos ayuda a construir aplicaciones para diferentes dispositivos y
 sistemas operativos.
 
+[Función Lambda](https://www.youtube.com/watch?v=8LVdhVMNQSw&ab_channel=miw-upm)
+
 # Spring Framework 
 
 Como definición podemos decir que Spring es un framework de código abierto para la creación de aplicaciones empresariales Java
