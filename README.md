@@ -38,6 +38,7 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [ORM](#ORM) 
 
 ## Semana 3
+- [Repaso](#Repaso)
 - [Refuerzo capa Servicio](#Refuerzo-capa-Servicio)
 - [Refuerzo Mappers](#Refuerzo-Mappers)
 - [Manejo de Excepciones](#Manejo-de-Excepciones)
@@ -845,6 +846,43 @@ Spring ofrece la posibilidad de aplicar esta técnica utilizando Hibernete
 - [Arquitectura de software y Spring](https://gustavopeiretti.com/es/)
 
 ## Semana 3
+
+# Repaso
+
+La clase 1 y Clase 2 se ve como se estructura la Api.
+
+Tener las 3 carpetas:
+
+	- Controllers
+	- Model
+	- Service
+
+En el modelo se modela el problema a resolver, dentro del modelo hay 4 capas:
+
+	- En el corazón está la base de datos, es el centro.
+	
+	- Luego las capas que tiene La Capa Model se van acomodando desde afuera del centro hacia el exterior 
+	
+		- Entities: Se encuentra más en contacto con la base de datos, se coloca todas las propiedades.
+			    Nombre, tipo de datos.
+			    Una etiqueta que se puede sumar es @table: El nombre de la tabla.
+			 
+		- Domain: El objeto que se encuntra en contacto con el dominio, con las respuesta que llega a nuestra api, son dto que sirven para no
+		exponer las entidades, las tablas de la base de datos, se pueden tener varios dto.
+		
+		- Mappers: Mapea que valores de la entidad a los dto, tiene la función de hacer el mappeo.
+		- Repository: Extendemos una clase JPA, se puede hacer funciones para hacer consultas más especificas. 
+		Con esta clase interactuamos directamente con la base de datos, hace el CRUD 
+	
+	- Capa de Servicio: 
+		
+		- Está la lógica de negocios, su mapeador, su repositorio.
+		- Se inyectan objetos.
+		- Siempre se pone la lógica de negocios.
+	
+	- Capa Controller:
+	
+		- Es el enrutador de las peticiones que van llegando a la API, deriva a los diferentes lugares que fuese necesario.
 
 # Refuerzo capa Servicio
 
