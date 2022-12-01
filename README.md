@@ -846,12 +846,12 @@ Spring ofrece la posibilidad de aplicar esta técnica utilizando Hibernete
 
 ## Semana 3
 
-# Refuerzo-capa-Servicio
+# Refuerzo capa Servicio
 
-# Refuerzo-Mappers)
+# Refuerzo-Mappers
 
-# Manejo de Excepciones)
+# Manejo de Excepciones
 
-# Tipo de respuesta HTTP)
+# Tipo de respuesta HTTP
 
 
