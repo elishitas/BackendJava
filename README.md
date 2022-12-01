@@ -37,6 +37,11 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 - [JPA](#JPA) 
 - [ORM](#ORM) 
 
+## Semana 3
+- [Refuerzo capa Servicio](#Rfuerzo-capa-Servicio)
+- [Refuerzo-Mappers](#Refuerzo-Mappers)
+- [Manejo de Excepciones](#Manejo-de-Excepciones)
+- [Tipo de respuesta HTTP](#Tipo-de-respuesta-HTTP)
 
 ## Semana 1
 
@@ -839,6 +844,10 @@ Spring ofrece la posibilidad de aplicar esta técnica utilizando Hibernete
 
 - [Arquitectura de software y Spring](https://gustavopeiretti.com/es/)
 
-
+## Semana 3
+- [Refuerzo capa Servicio](#Rfuerzo-capa-Servicio)
+- [Refuerzo-Mappers](#Refuerzo-Mappers)
+- [Manejo de Excepciones](#Manejo-de-Excepciones)
+- [Tipo de respuesta HTTP](#Tipo-de-respuesta-HTTP)
 
 
