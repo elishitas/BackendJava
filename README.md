@@ -855,10 +855,9 @@ Tener las 3 carpetas:
   - Controllers
   - Model
   - Service
+  - En el corazón está la base de datos, es el centro.
 
 En el modelo se modela el problema a resolver, dentro del modelo hay 4 capas:
-
-  - En el corazón está la base de datos, es el centro.
 
 - Capa de Entidad: 
 
