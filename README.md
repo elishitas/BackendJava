@@ -861,7 +861,7 @@ En el modelo se modela el problema a resolver, dentro del modelo hay 4 capas:
   - En el corazón está la base de datos, es el centro.
 
 - Capa de Entidad: 
-- 
+
   - Luego las capas que tiene La Capa Model se van acomodando desde afuera del centro hacia el exterior 
 	
   - Entities: Se encuentra más en contacto con la base de datos, se coloca todas las propiedades.
