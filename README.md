@@ -39,10 +39,11 @@ Esta es una guía para conocer más sobre JAVA y la creación de APIS con Spring
 
 ## Semana 3
 - [Repaso](#Repaso)
-- [Refuerzo capa Servicio](#Refuerzo-capa-Servicio)
-- [Refuerzo Mappers](#Refuerzo-Mappers)
 - [Manejo de Excepciones](#Manejo-de-Excepciones)
 - [Tipo de respuesta HTTP](#Tipo-de-respuesta-HTTP)
+- [Refuerzo capa Servicio](#Refuerzo-capa-Servicio)
+- [Refuerzo Mappers](#Refuerzo-Mappers)
+
 
 ## Semana 1
 
@@ -885,12 +886,14 @@ En el modelo se modela el problema a resolver, dentro del modelo hay 4 capas:
 	
   - Es el enrutador de las peticiones que van llegando a la API, deriva a los diferentes lugares que fuese necesario.
 
+# Manejo de Excepciones
+
+# Tipo de respuesta HTTP
+
 # Refuerzo capa Servicio
 
 # Refuerzo-Mappers
 
-# Manejo de Excepciones
 
-# Tipo de respuesta HTTP
 
 
